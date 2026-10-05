@@ -2,25 +2,25 @@
 
 Esta es una aplicación interactiva construida con React y Vite que sirve como recurso educativo y de referencia sobre la **Tríada CIA (Confidencialidad, Integridad y Disponibilidad)**, el modelo fundamental de la seguridad de la información.
 
-## 🌟 Características
+## Características
 
 *   **Diseño Moderno:** Interfaz responsiva estilo "Dark Mode" optimizada para la lectura.
 *   **Contenido Detallado:** Explicaciones profundas de cada pilar, incluyendo mecanismos de defensa, estándares de la industria (ISO, NIST) y análisis de casos reales.
 *   **Enfoque Actualizado:** Incluye conceptos modernos como la arquitectura *Zero Trust* y la tensión operativa entre los pilares.
 *   **Simulador Interactivo:** Un mini-juego integrado donde el usuario puede poner a prueba sus conocimientos clasificando diferentes escenarios de brechas de seguridad.
 
-## 🚀 Tecnologías
+## Tecnologías
 
 *   React
 *   Vite
 *   CSS Nativo (Integrado en el componente para una distribución sencilla de un solo archivo)
 
-## 🔗 Enlace al Proyecto
+## Enlace al Proyecto
 
 *(Si tienes el proyecto alojado en alguna plataforma como Vercel, Netlify o GitHub Pages, reemplaza este enlace con la URL real)*
 [Ver la Infografía Interactiva en vivo](#)
 
-## 🛠️ Instalación y Uso Local
+## Instalación y Uso Local
 
 Para correr este proyecto en tu máquina local:
 
