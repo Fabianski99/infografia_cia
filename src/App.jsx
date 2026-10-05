@@ -268,10 +268,29 @@ export default function App() {
   const [activePillar, setActivePillar] = useState(null);
 
   useEffect(() => {
+    document.documentElement.style.width = '100%';
+    document.documentElement.style.height = '100%';
+    document.documentElement.style.margin = '0';
+    document.documentElement.style.padding = '0';
+    document.documentElement.style.overflowX = 'hidden'; // Prevenir scroll horizontal accidental
+
+    document.body.style.width = '100%';
+    document.body.style.minHeight = '100vh';
     document.body.style.margin = '0';
+    document.body.style.padding = '0';
     document.body.style.backgroundColor = '#0b1120'; 
     document.body.style.color = '#f8fafc';
     document.body.style.fontFamily = "'Inter', 'Segoe UI', system-ui, sans-serif";
+    document.body.style.overflowX = 'hidden';
+
+    // Importante: Si estás usando Vite, el div #root suele tener un max-width. Lo quitamos.
+    const rootElement = document.getElementById('root');
+    if (rootElement) {
+      rootElement.style.width = '100%';
+      rootElement.style.maxWidth = 'none';
+      rootElement.style.margin = '0';
+      rootElement.style.padding = '0';
+    }
   }, []);
 
   const scrollToSection = (id) => {
@@ -305,6 +324,7 @@ export default function App() {
           background: rgba(11, 17, 32, 0.9); backdrop-filter: blur(12px);
           border-bottom: 1px solid var(--border-color);
           padding: 16px 24px; display: flex; justify-content: center; gap: 32px;
+          width: 100%; /* Asegurar que ocupe todo el ancho */
         }
         .nav-link {
           background: none; border: none; color: var(--text-secondary);
@@ -312,13 +332,21 @@ export default function App() {
         }
         .nav-link:hover { color: var(--text-primary); text-shadow: 0 0 10px rgba(255,255,255,0.2); }
 
-        /* CONTENEDORES AMPLIADOS (MODIFICADO PARA OCUPAR MÁS ANCHO) */
+        /* CONTENEDORES AMPLIADOS - AHORA REALMENTE FULL WIDTH */
         .main-container {
-          width: 100%;
-          max-width: 1550px; /* Expandido para aprovechar pantallas ultrawide */
-          margin: 0 auto;
-          padding: 80px 4vw;
+          width: 100vw; /* Forzar el ancho de la ventana */
+          max-width: 100%; /* Evitar restricciones previas */
+          margin: 0;
+          padding: 80px 4vw; /* Padding lateral fluido basado en el viewport */
           display: flex; flex-direction: column; gap: 120px;
+          box-sizing: border-box; /* Asegurar que el padding no añada scroll horizontal */
+        }
+
+        /* Envoltorio interno opcional para secciones muy anchas si no quieres que el texto llegue de borde a borde en monitores 4k */
+        .section-wrapper {
+            max-width: 1800px; /* Un límite muy amplio, pero que previene líneas de texto kilométricas */
+            margin: 0 auto;
+            width: 100%;
         }
 
         /* --- HERO --- */
@@ -465,14 +493,31 @@ export default function App() {
         .real-case-section h4 { color: #fca5a5; font-size: 18px; margin: 0;}
         .real-case-section p { color: #fecaca; font-size: 15px; margin: 0;}
 
-        /* --- TRADE-OFFS --- */
+        /* --- TRADE-OFFS (EL EQUILIBRIO) MEJORADO --- */
         .tradeoffs-section { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 32px; padding: 70px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2);}
         .tradeoffs-section h2 { font-size: 42px; margin-bottom: 20px; }
         .tradeoffs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; margin-top: 50px; text-align: left;}
         .trade-card { background: var(--surface-color); padding: 40px; border-radius: 20px; border: 1px solid transparent; transition: border 0.3s; }
         .trade-card:hover { border-color: var(--accent-blue); }
-        .trade-card h3 { display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 24px; margin-bottom: 20px; color: #cbd5e1; background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px;}
-        .trade-card p { font-size: 16px; margin: 0;}
+        
+        /* Nuevos estilos para los títulos VS sin emojis */
+        .trade-title { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 24px; background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px;}
+        .trade-term { font-size: 18px; font-weight: 700; padding: 8px 16px; border-radius: 8px; background: rgba(255,255,255,0.03); letter-spacing: 0.5px;}
+        .trade-term.conf { color: #3b82f6; border-bottom: 2px solid #3b82f6; }
+        .trade-term.disp { color: #f59e0b; border-bottom: 2px solid #f59e0b; }
+        .trade-term.integ { color: #10b981; border-bottom: 2px solid #10b981; }
+        .trade-vs { font-size: 13px; font-weight: 900; background: var(--bg-darker); color: var(--text-secondary); width: 32px; height: 32px; display: grid; place-items: center; border-radius: 50%; border: 1px solid var(--border-color); }
+        
+        .trade-card p { font-size: 16px; margin: 0; text-align: center; color: #cbd5e1; line-height: 1.6;}
+
+        /* --- NUEVO BLOQUE VISUAL ZERO TRUST --- */
+        .zt-comparison { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: rgba(0,0,0,0.2); padding: 24px; border-radius: 16px; margin: 24px 0; border: 1px solid rgba(255,255,255,0.02);}
+        .zt-box { flex: 1; text-align: center; }
+        .zt-badge { display: inline-block; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; padding: 4px 10px; border-radius: 4px; margin-bottom: 12px; background: var(--bg-darker); color: var(--text-secondary); border: 1px solid var(--border-color);}
+        .zt-badge.active { background: rgba(59, 130, 246, 0.15); color: var(--neon-blue); border-color: rgba(59, 130, 246, 0.3);}
+        .zt-box strong { display: block; font-size: 16px; color: var(--text-primary); margin-bottom: 4px;}
+        .zt-box small { display: block; font-size: 13px; color: #94a3b8; font-style: italic;}
+        .zt-arrow { color: var(--border-color); display: flex; align-items: center;}
 
         /* --- SIMULADOR --- */
         .scenario-tester { background: var(--surface-color); border-radius: 32px; padding: 70px; border: 1px solid var(--border-color); max-width: 1100px; margin: 0 auto; width: 100%;}
@@ -554,17 +599,18 @@ export default function App() {
         <button className="nav-link" onClick={() => scrollToSection('simulator')}>Simulador</button>
       </nav>
 
+      {}
       <main className="main-container">
         
         {/* HERO */}
-        <section className="hero">
+        <section className="hero section-wrapper">
           <span className="eyebrow">Arquitectura de Seguridad</span>
           <h1>La Tríada CIA</h1>
           <p>El estándar internacional definitivo para evaluar riesgos y diseñar arquitecturas ciberseguras. Comprenderlo no es tecnología, es metodología.</p>
         </section>
 
         {/* CONCEPTO & DIAGRAMA SVG PERFECTO (Rediseñado alineado a la izquierda) */}
-        <section id="concept" className="concept-section">
+        <section id="concept" className="concept-section section-wrapper">
           <div className="concept-text">
             <span className="eyebrow" style={{marginBottom: '16px', background: 'transparent', border: '1px solid var(--border-color)', color: 'var(--text-secondary)'}}>Concepto Core</span>
             <h2>El Modelo Fundamental</h2>
@@ -598,15 +644,32 @@ export default function App() {
               <div className="card-header-icon">🌐</div>
               <h3>La Tríada en la era "Zero Trust"</h3>
               <p>Históricamente, las redes confiaban en todo lo que estuviera "dentro" del perímetro de la empresa. Hoy, el paradigma <strong>Zero Trust (Confianza Cero)</strong> asume que la red ya está comprometida desde el inicio.</p>
+              
+              {/* NUEVO BLOQUE VISUAL AÑADIDO PARA EVITAR EL VACÍO */}
+              <div className="zt-comparison">
+                <div className="zt-box">
+                  <span className="zt-badge">Modelo Anterior</span>
+                  <strong>Castillo y Foso</strong>
+                  <small>"Confiable por estar dentro"</small>
+                </div>
+                <div className="zt-arrow">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </div>
+                <div className="zt-box">
+                  <span className="zt-badge active">Estándar Actual</span>
+                  <strong>Verificación Continua</strong>
+                  <small>"Nunca confiar, siempre validar"</small>
+                </div>
+              </div>
+
               <p>Bajo este modelo, la Tríada CIA se aplica no solo al perímetro, sino a cada micro-transacción. La <em>Confidencialidad</em> exige verificar la identidad en cada petición, la <em>Integridad</em> asume que los paquetes pueden estar envenenados internamente, y la <em>Disponibilidad</em> requiere arquitecturas elásticas en la nube inmunes a fallas locales.</p>
               
-              {/* INFO AGREGADA: Tags modernos y ampliación de conceptos */}
               <div className="modern-pills">
                 <span className="pill">Microsegmentación</span>
                 <span className="pill">Telemetría Avanzada</span>
                 <span className="pill">Identidad como Perímetro</span>
               </div>
-              <p style={{fontSize: '15px', borderTop: '1px solid var(--border-color)', paddingTop: '20px', marginTop: '20px'}}>
+              <p style={{fontSize: '15px', borderTop: '1px solid var(--border-color)', paddingTop: '20px', marginTop: '20px', color: '#94a3b8'}}>
                 Ya no basta con proteger la puerta de entrada. La seguridad debe integrarse en el código fuente de cada aplicación y en la validación continua de cada usuario activo.
               </p>
             </div>
@@ -658,7 +721,7 @@ export default function App() {
         </section>
 
         {/* TARJETAS EXPANDIBLES (Se mantienen intactas por su excelente funcionalidad) */}
-        <section id="pillars">
+        <section id="pillars" className="section-wrapper">
           <div className="section-header">
             <h2>Análisis Profundo de Pilares</h2>
             <p>Despliega cada tarjeta para explorar la arquitectura técnica, los estándares de la industria y la autopsia de un incidente global real.</p>
@@ -683,18 +746,26 @@ export default function App() {
           
           <div className="tradeoffs-grid">
             <div className="trade-card">
-              <h3>🔒 vs ⚡ (Confidencialidad vs Disponibilidad)</h3>
+              <div className="trade-title">
+                <span className="trade-term conf">Confidencialidad</span>
+                <span className="trade-vs">VS</span>
+                <span className="trade-term disp">Disponibilidad</span>
+              </div>
               <p>Si exiges un cifrado asimétrico complejo y 3 métodos de autenticación (biometría, token físico y contraseña) para abrir cada archivo, los datos serán impenetrables, pero el personal tardará minutos en acceder a ellos, arruinando la agilidad y disponibilidad del sistema en una urgencia operativa.</p>
             </div>
             <div className="trade-card">
-              <h3>🛡️ vs ⚡ (Integridad vs Disponibilidad)</h3>
+              <div className="trade-title">
+                <span className="trade-term integ">Integridad</span>
+                <span className="trade-vs">VS</span>
+                <span className="trade-term disp">Disponibilidad</span>
+              </div>
               <p>Si un sistema transaccional debe verificar decenas de firmas digitales, cotejar hashes contra bases de datos externas y grabar en 3 blockchains inmutables antes de aprobar una compra para asegurar integridad total, el procesamiento será tan lento que causará caídas de servicio (timeouts) durante picos de demanda.</p>
             </div>
           </div>
         </section>
 
         {/* SIMULADOR */}
-        <section id="simulator">
+        <section id="simulator" className="section-wrapper">
           <EnhancedSimulator />
         </section>
 
