@@ -320,7 +320,7 @@ export default function App() {
 
         /* NAVEGACIÓN STICKY */
         .sticky-nav {
-          position: sticky; top: 0; z-index: 100;
+          position: fixed; top: 0; left: 0; z-index: 1000;
           background: rgba(11, 17, 32, 0.9); backdrop-filter: blur(12px);
           border-bottom: 1px solid var(--border-color);
           padding: 16px 24px; display: flex; justify-content: center; gap: 32px;
@@ -337,7 +337,7 @@ export default function App() {
           width: 100vw; /* Forzar el ancho de la ventana */
           max-width: 100%; /* Evitar restricciones previas */
           margin: 0;
-          padding: 80px 4vw; /* Padding lateral fluido basado en el viewport */
+          padding: 120px 4vw 80px; /* Aumentamos el padding superior (120px) para que el header no tape el título */
           display: flex; flex-direction: column; gap: 120px;
           box-sizing: border-box; /* Asegurar que el padding no añada scroll horizontal */
         }
