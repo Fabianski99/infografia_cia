@@ -1,23 +1,27 @@
 import React, { useState, useEffect } from 'react';
 
-// --- DATOS EXPANDIDOS ---
+// --- DATOS EXPANDIDOS Y PROFUNDIZADOS ---
 const triadData = {
   confidencialidad: {
     id: 'confidencialidad',
     title: 'Confidencialidad',
     color: '#3b82f6', // Blue
     icon: '🔒',
-    shortDef: 'Garantizar que la información solo sea accesible para las personas autorizadas.',
-    longDef: 'La confidencialidad es el pilar que previene la divulgación no autorizada de la información. Funciona bajo el principio de "necesidad de saber" (need-to-know) y el privilegio mínimo. Si un dato cae en manos de alguien que no tiene los permisos explícitos para verlo, este pilar se ha roto. Es el equivalente digital a la privacidad.',
-    question: '¿Alguien que no debería, puede ver esto?',
+    shortDef: 'Garantizar que la información solo sea accesible para las personas o sistemas autorizados.',
+    longDef: 'La confidencialidad previene la divulgación no autorizada de la información. Funciona bajo el principio de "necesidad de saber" (need-to-know) y el privilegio mínimo. Si un dato cae en manos de una entidad sin los permisos explícitos para verlo, este pilar se ha fracturado. Es la piedra angular de la privacidad y el cumplimiento normativo.',
+    question: '¿Alguien que no debería, puede ver o acceder a esto?',
     mechanisms: [
-      { name: 'Cifrado (En reposo y en tránsito)', desc: 'Uso de algoritmos (AES, RSA) para volver los datos ilegibles sin la llave correcta.' },
-      { name: 'Control de Acceso (RBAC)', desc: 'Asignar permisos basados en el rol del usuario en la organización.' },
-      { name: 'Autenticación Fuerte (MFA)', desc: 'Exigir más de un método para verificar la identidad (ej. contraseña + código SMS).' }
+      { name: 'Cifrado Fuerte (AES-256, RSA)', desc: 'Transformación algorítmica de los datos tanto en reposo (discos) como en tránsito (redes) para que sean ilegibles sin la llave criptográfica.' },
+      { name: 'Gestión de Identidades (IAM y RBAC)', desc: 'Asignación de permisos granulares basados estrictamente en el rol del usuario, asegurando que nadie tenga más acceso del necesario.' },
+      { name: 'Autenticación Multifactor (MFA)', desc: 'Exigir algo que el usuario sabe (contraseña), algo que tiene (token/móvil) o algo que es (biometría).' }
     ],
+    advancedInfo: {
+      standards: 'ISO/IEC 27001 (Anexo A.8 Control de Accesos), GDPR (Privacidad por Diseño).',
+      kpis: ['Número de accesos no autorizados detectados.', 'Porcentaje de bases de datos críticas con cifrado activo.']
+    },
     realCase: {
       title: 'Caso Equifax (2017)',
-      desc: 'Una vulnerabilidad en un servidor web permitió a los atacantes acceder a los datos personales (nombres, fechas de nacimiento, números de seguro social) de casi 150 millones de personas. Fue una falla masiva de confidencialidad porque entidades no autorizadas leyeron datos altamente sensibles.'
+      desc: 'Una vulnerabilidad sin parchear en un servidor Apache Struts permitió a atacantes acceder a la base de datos central. Se extrajeron datos personales (SSN, fechas de nacimiento) de 147 millones de personas. Una falla catastrófica de confidencialidad al fallar los controles de acceso a datos en texto plano.'
     }
   },
   integridad: {
@@ -25,17 +29,21 @@ const triadData = {
     title: 'Integridad',
     color: '#10b981', // Emerald
     icon: '🛡️',
-    shortDef: 'Asegurar que la información sea precisa y no haya sido alterada de forma no autorizada.',
-    longDef: 'La integridad garantiza que los datos sean confiables y exactos durante todo su ciclo de vida. Esto significa protegerlos contra modificaciones no autorizadas, ya sean intencionales (por un atacante) o accidentales (por un error del sistema o de un empleado). Si no puedes confiar en que tus datos son los originales, este pilar ha fallado.',
-    question: '¿La información es correcta, confiable y original?',
+    shortDef: 'Asegurar que la información sea exacta, completa y no haya sido alterada.',
+    longDef: 'La integridad garantiza que los datos sean confiables durante todo su ciclo de vida. Esto significa protegerlos contra modificaciones no autorizadas, ya sean intencionales (fraude, inyección de código) o accidentales (errores humanos, corrupción de hardware). Si no puedes probar que tus datos son los originales, carecen de valor legal y operativo.',
+    question: '¿La información es correcta, inmutable y verificable?',
     mechanisms: [
-      { name: 'Funciones Hash (SHA-256)', desc: 'Crear una "huella digital" única de un archivo. Si el archivo cambia un bit, el hash cambia completamente.' },
-      { name: 'Firmas Digitales', desc: 'Garantizan que un mensaje proviene de quien dice provenir y no fue alterado en el camino (No repudio).' },
-      { name: 'Controles de Versiones y Auditoría', desc: 'Sistemas que registran quién modificó qué dato y cuándo (ej. Git, logs inmutables).' }
+      { name: 'Funciones Hash Criptográficas (SHA-3)', desc: 'Generación de una "huella digital" matemática para archivos o mensajes. Si un solo bit cambia, el hash resultante cambia drásticamente.' },
+      { name: 'Firmas Digitales (No repudio)', desc: 'Uso de criptografía asimétrica para garantizar que un mensaje u orden proviene del remitente real y no fue modificado en el camino.' },
+      { name: 'Registros Inmutables (WORM)', desc: 'Sistemas de almacenamiento "Write Once, Read Many" y auditoría de logs protegida para registrar quién alteró qué dato y cuándo.' }
     ],
+    advancedInfo: {
+      standards: 'NIST SP 800-53 (Familia SI - System and Information Integrity).',
+      kpis: ['Frecuencia de alertas de alteración de archivos de sistema (FIM).', 'Porcentaje de logs centralizados y protegidos contra escritura.']
+    },
     realCase: {
-      title: 'Ataque a la red SWIFT en el Banco de Bangladesh (2016)',
-      desc: 'Los atacantes no solo robaron credenciales (Confidencialidad), sino que alteraron el software del banco para ocultar las transferencias fraudulentas que estaban realizando. Modificaron los registros para que los reportes impresos mostraran balances normales. Altera la verdad = Falla de Integridad.'
+      title: 'Ataque a la red SWIFT (Banco de Bangladesh, 2016)',
+      desc: 'Los atacantes vulneraron la red del banco, pero su golpe maestro fue alterar el software local que procesaba las transacciones SWIFT. Al modificar los registros de las impresoras para ocultar las transferencias fraudulentas de $81 millones, destruyeron la integridad del sistema de auditoría del banco.'
     }
   },
   disponibilidad: {
@@ -43,52 +51,55 @@ const triadData = {
     title: 'Disponibilidad',
     color: '#f59e0b', // Amber
     icon: '⚡',
-    shortDef: 'Garantizar que los sistemas y los datos estén disponibles cuando se necesiten.',
-    longDef: 'De nada sirve que la información sea secreta y exacta si los usuarios legítimos no pueden acceder a ella cuando la necesitan para trabajar. La disponibilidad se asegura de que los sistemas, redes y aplicaciones funcionen de manera ininterrumpida frente a ataques, fallos de hardware o desastres naturales.',
-    question: '¿Puedo acceder al sistema en este preciso momento?',
+    shortDef: 'Garantizar que los sistemas y los datos estén operativos cuando se necesiten.',
+    longDef: 'La seguridad es inútil si impide el funcionamiento del negocio. La disponibilidad asegura que los servicios, redes y aplicaciones respondan de manera oportuna frente a picos de demanda, ataques destructivos, fallos de hardware o desastres naturales. Está directamente ligada a la continuidad del negocio y los Acuerdos de Nivel de Servicio (SLA).',
+    question: '¿Los usuarios legítimos pueden acceder al sistema en este preciso momento?',
     mechanisms: [
-      { name: 'Redundancia y Alta Disponibilidad', desc: 'Tener servidores, discos (RAID) y conexiones de red de respaldo. Si uno falla, otro toma su lugar al instante.' },
-      { name: 'Mitigación Anti-DDoS', desc: 'Servicios de red que filtran el tráfico basura diseñado para saturar los servidores.' },
-      { name: 'Planes de Recuperación (DRP)', desc: 'Copias de seguridad regulares y probadas en sitios geográficamente separados (off-site backups).' }
+      { name: 'Alta Disponibilidad (HA) y Redundancia', desc: 'Diseño de arquitecturas sin puntos únicos de fallo (SPOF). Uso de balanceadores de carga, clústeres y arreglos RAID.' },
+      { name: 'Mitigación y Filtrado Anti-DDoS', desc: 'Redes de distribución de contenido (CDN) y firewalls de capa de aplicación (WAF) que absorben y filtran tráfico malicioso volumétrico.' },
+      { name: 'Planes de Recuperación (BCP/DRP)', desc: 'Estrategias de copias de seguridad (Regla 3-2-1), sitios alternos de procesamiento (Hot/Cold sites) y simulacros de recuperación.' }
     ],
+    advancedInfo: {
+      standards: 'ISO/IEC 22301 (Gestión de Continuidad de Negocio).',
+      kpis: ['Uptime de servicios críticos (Ej: 99.99%).', 'RTO (Tiempo Objetivo de Recuperación) y RPO (Punto Objetivo de Recuperación).']
+    },
     realCase: {
-      title: 'Ataque DDoS a Dyn (2016)',
-      desc: 'Un ataque masivo de botnets (cámaras y routers infectados) saturó los servidores DNS de Dyn. Como resultado, gran parte de internet en EE.UU. (Twitter, Netflix, Reddit) quedó inaccesible por horas. La información no fue robada ni alterada, pero nadie podía acceder a ella. Falla crítica de disponibilidad.'
+      title: 'Ataque DDoS a Dyn DNS (2016)',
+      desc: 'La botnet Mirai, compuesta por miles de dispositivos IoT infectados (cámaras, routers), dirigió un tráfico masivo hacia los servidores DNS de Dyn. El resultado: gran parte de internet en EE.UU. (incluyendo Twitter, Netflix, y Reddit) quedó inaccesible. No robaron nada, pero paralizaron la operación.'
     }
   }
 };
 
 const scenarios = [
   { 
-    text: "Un atacante inunda la página web de una universidad con millones de solicitudes falsas. Los alumnos no pueden entrar a ver sus notas.", 
+    text: "Un atacante inunda la página web de una universidad con millones de solicitudes falsas simultáneas. Los alumnos no pueden entrar a ver sus notas ni inscribir asignaturas.", 
     answer: "disponibilidad",
-    explanation: "El servicio dejó de funcionar para los usuarios legítimos. Es un clásico ataque DDoS (Denegación de Servicio)."
+    explanation: "El servicio dejó de funcionar para los usuarios legítimos. Es un ataque volumétrico DDoS (Denegación de Servicio Distribuido) diseñado para agotar los recursos de la red."
   },
   { 
-    text: "Un empleado de finanzas deja su portátil desbloqueado en una cafetería. Alguien mira la pantalla y toma una foto de la nómina de la empresa.", 
+    text: "Un empleado de finanzas deja su portátil desbloqueado en la sala de reuniones. Alguien mira la pantalla y toma una fotografía de la matriz de sueldos de la directiva.", 
     answer: "confidencialidad",
-    explanation: "Información sensible fue vista por alguien sin autorización. El secreto se rompió."
+    explanation: "Información altamente sensible fue visualizada por un individuo sin autorización. El secreto se rompió por una falla en las políticas de escritorio limpio."
   },
   { 
-    text: "Un malware infecta el servidor de un hospital y cifra todos los historiales médicos, exigiendo un pago en Bitcoin para entregar la clave de descifrado.", 
+    text: "Un grupo de ransomware infecta los servidores centrales de un municipio, cifrando todos los discos duros y exigiendo un pago para entregar la clave de descifrado.", 
     answer: "disponibilidad",
-    explanation: "Aunque implica cifrado, el objetivo es impedir el acceso (Ransomware). Al no poder acceder a los datos cuando se necesitan, falla la disponibilidad."
+    explanation: "Aunque la técnica usa criptografía, el impacto real es que los funcionarios no pueden usar los sistemas ni acceder a los datos para trabajar. El servicio se interrumpió por completo."
   },
   { 
-    text: "Un estudiante intercepta el tráfico de red de su profesor y modifica el paquete de datos que contiene su calificación final, cambiándola de un 4 a un 7 antes de que llegue a la base de datos.", 
+    text: "Un estudiante intercepta el tráfico de red Wi-Fi no cifrado de su profesor y modifica los paquetes que contienen las calificaciones, cambiando su nota antes de que se guarde en la base de datos.", 
     answer: "integridad",
-    explanation: "El dato fue alterado en tránsito. La base de datos guardó información inexacta que no refleja la realidad."
+    explanation: "El dato fue alterado intencionalmente en tránsito (Ataque Man-in-the-Middle). La base de datos ahora contiene información falsa e inexacta."
   },
   {
-    text: "Una empresa sufre una brecha y una base de datos con millones de contraseñas de usuarios en texto plano (sin cifrar) es publicada en un foro de hackers.",
+    text: "Debido a una mala configuración en un bucket de Amazon S3, una base de datos con contraseñas e historiales de compras de miles de clientes queda indexada en Google y expuesta al público.",
     answer: "confidencialidad",
-    explanation: "Las contraseñas (secretos) fueron expuestas al público. Es la violación de confidencialidad más severa."
+    explanation: "Datos que debían ser privados quedaron expuestos al dominio público. Es una brecha de confidencialidad masiva por negligencia en la configuración (Misconfiguration)."
   }
 ];
 
 // --- COMPONENTES ---
 
-// 1. Tarjeta Expandible
 function ExpandableTriadCard({ pillar, isActive, onClick }) {
   return (
     <div className={`triad-card ${isActive ? 'active' : ''}`} style={{ '--accent-color': pillar.color }}>
@@ -98,7 +109,7 @@ function ExpandableTriadCard({ pillar, isActive, onClick }) {
           <h2>{pillar.title}</h2>
         </div>
         <button className="expand-btn" aria-label="Expandir detalles">
-          {isActive ? 'Menos info ▲' : 'Más info ▼'}
+          {isActive ? 'Colapsar detalles ▲' : 'Explorar a fondo ▼'}
         </button>
       </div>
       
@@ -112,7 +123,7 @@ function ExpandableTriadCard({ pillar, isActive, onClick }) {
           <p className="long-def">{pillar.longDef}</p>
           
           <div className="mechanisms-section">
-            <h3>Cómo se protege:</h3>
+            <h3>Arquitectura de Defensa:</h3>
             <div className="mech-grid">
               {pillar.mechanisms.map((mech, idx) => (
                 <div key={idx} className="mech-item">
@@ -123,9 +134,31 @@ function ExpandableTriadCard({ pillar, isActive, onClick }) {
             </div>
           </div>
 
+          {/* Nueva subsección avanzada */}
+          <div className="advanced-info-grid">
+            <div className="adv-box">
+              <span className="adv-icon">📋</span>
+              <div>
+                <h4>Estándares</h4>
+                <p>{pillar.advancedInfo.standards}</p>
+              </div>
+            </div>
+            <div className="adv-box">
+              <span className="adv-icon">📊</span>
+              <div>
+                <h4>KPIs Clave</h4>
+                <ul>
+                  {pillar.advancedInfo.kpis.map((kpi, idx) => <li key={idx}>{kpi}</li>)}
+                </ul>
+              </div>
+            </div>
+          </div>
+
           <div className="real-case-section">
-            <span className="case-badge">CASO REAL</span>
-            <h4>{pillar.realCase.title}</h4>
+            <div className="case-header">
+              <span className="case-badge">ANÁLISIS DE CASO REAL</span>
+              <h4>{pillar.realCase.title}</h4>
+            </div>
             <p>{pillar.realCase.desc}</p>
           </div>
         </div>
@@ -134,7 +167,6 @@ function ExpandableTriadCard({ pillar, isActive, onClick }) {
   );
 }
 
-// 2. Simulador (Quiz) Mejorado
 function EnhancedSimulator() {
   const [currentScenario, setCurrentScenario] = useState(0);
   const [score, setScore] = useState(0);
@@ -142,7 +174,7 @@ function EnhancedSimulator() {
   const [showResult, setShowResult] = useState(false);
 
   const handleGuess = (guess) => {
-    if (feedback) return; // Evitar multiples clics
+    if (feedback) return;
     const isCorrect = guess === scenarios[currentScenario].answer;
     setFeedback({ isCorrect, guess });
     if (isCorrect) setScore(score + 1);
@@ -168,11 +200,11 @@ function EnhancedSimulator() {
     const percentage = Math.round((score / scenarios.length) * 100);
     return (
       <div className="scenario-tester result-view">
-        <div className="result-circle" style={{ '--score-color': percentage >= 60 ? '#10b981' : '#f59e0b' }}>
+        <div className="result-circle" style={{ '--score-color': percentage >= 80 ? '#10b981' : percentage >= 60 ? '#f59e0b' : '#ef4444' }}>
           <span>{percentage}%</span>
         </div>
-        <h2>Análisis Completado</h2>
-        <p>Has clasificado correctamente {score} de {scenarios.length} incidentes de seguridad.</p>
+        <h2>Evaluación Completada</h2>
+        <p>Has clasificado correctamente {score} de {scenarios.length} incidentes críticos de seguridad.</p>
         <button onClick={restart} className="action-btn">Repetir Simulación</button>
       </div>
     );
@@ -183,8 +215,8 @@ function EnhancedSimulator() {
   return (
     <div className="scenario-tester">
       <div className="tester-header">
-        <span className="eyebrow">SIMULADOR DE INCIDENTES</span>
-        <h2>Clasifica el Ataque</h2>
+        <span className="eyebrow">PONLO A PRUEBA</span>
+        <h2>Clasifica la Brecha</h2>
       </div>
       
       <div className="progress-bar">
@@ -192,7 +224,7 @@ function EnhancedSimulator() {
       </div>
       
       <div className="scenario-box">
-        <span className="scenario-number">Escenario {currentScenario + 1} de {scenarios.length}</span>
+        <span className="scenario-number">Incidente reportado {currentScenario + 1} de {scenarios.length}</span>
         <p className="scenario-text">"{currentData.text}"</p>
       </div>
 
@@ -200,10 +232,9 @@ function EnhancedSimulator() {
         {Object.values(triadData).map((pillar) => {
           let btnClass = 'test-btn ';
           if (feedback) {
-            if (pillar.id === currentData.answer) btnClass += 'correct-ans '; // La respuesta correcta siempre se marca
-            if (feedback.guess === pillar.id && !feedback.isCorrect) btnClass += 'wrong-ans '; // Si adivinó mal, marcar en rojo
+            if (pillar.id === currentData.answer) btnClass += 'correct-ans ';
+            if (feedback.guess === pillar.id && !feedback.isCorrect) btnClass += 'wrong-ans ';
           }
-
           return (
             <button 
               key={pillar.id}
@@ -221,10 +252,12 @@ function EnhancedSimulator() {
       {feedback && (
         <div className={`feedback-msg ${feedback.isCorrect ? 'success' : 'error'}`}>
           <div className="feedback-content">
-            <strong>{feedback.isCorrect ? '¡Correcto!' : 'Incorrecto.'}</strong>
+            <strong>{feedback.isCorrect ? '¡Evaluación Correcta!' : 'Diagnóstico Incorrecto'}</strong>
             <p>{currentData.explanation}</p>
           </div>
-          <button onClick={nextQuestion} className="next-btn">Siguiente ➔</button>
+          <button onClick={nextQuestion} className="next-btn">
+            {currentScenario + 1 === scenarios.length ? 'Ver Resultados' : 'Siguiente Caso ➔'}
+          </button>
         </div>
       )}
     </div>
@@ -237,13 +270,13 @@ export default function App() {
 
   useEffect(() => {
     document.body.style.margin = '0';
-    document.body.style.backgroundColor = '#0f172a';
+    document.body.style.backgroundColor = '#0b1120'; // Fondo principal más oscuro
     document.body.style.color = '#f8fafc';
     document.body.style.fontFamily = "'Inter', 'Segoe UI', system-ui, sans-serif";
   }, []);
 
   const scrollToSection = (id) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
@@ -258,201 +291,229 @@ export default function App() {
           --text-secondary: #94a3b8;
           --border-color: #334155;
           --accent-blue: #3b82f6;
+          --neon-blue: #60a5fa;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
-        /* Tipografía Base */
         h1, h2, h3, h4 { font-weight: 700; line-height: 1.2; color: var(--text-primary); }
         p { line-height: 1.6; color: var(--text-secondary); }
 
-        /* Navegación Sticky */
+        /* NAVEGACIÓN STICKY */
         .sticky-nav {
-          position: sticky;
-          top: 0;
-          z-index: 50;
-          background: rgba(15, 23, 42, 0.85);
-          backdrop-filter: blur(12px);
+          position: sticky; top: 0; z-index: 100;
+          background: rgba(11, 17, 32, 0.9); backdrop-filter: blur(12px);
           border-bottom: 1px solid var(--border-color);
-          padding: 16px 24px;
-          display: flex;
-          justify-content: center;
-          gap: 24px;
+          padding: 16px 24px; display: flex; justify-content: center; gap: 32px;
         }
         .nav-link {
           background: none; border: none; color: var(--text-secondary);
           font-size: 14px; font-weight: 600; cursor: pointer; transition: color 0.2s;
         }
-        .nav-link:hover { color: var(--text-primary); }
+        .nav-link:hover { color: var(--text-primary); text-shadow: 0 0 10px rgba(255,255,255,0.2); }
 
-        /* Contenedor Principal */
+        /* CONTENEDORES AMPLIADOS (FULL WIDTH CON MAX-WIDTH GRANDE) */
         .main-container {
-          max-width: 1000px;
+          width: 100%;
+          max-width: 1400px; /* Mucho más ancho para aprovechar pantallas grandes */
           margin: 0 auto;
-          padding: 60px 24px;
-          display: flex;
-          flex-direction: column;
-          gap: 100px; /* Espaciado enorme entre secciones para dar respiro */
+          padding: 80px 4vw;
+          display: flex; flex-direction: column; gap: 120px;
         }
 
         /* --- HERO --- */
-        .hero { text-align: center; animation: fadeInDown 0.8s ease-out; }
+        .hero { text-align: center; animation: fadeInDown 0.8s ease-out; max-width: 900px; margin: 0 auto; }
         .eyebrow {
-          display: inline-block; color: var(--accent-blue); font-size: 12px; font-weight: 700;
-          letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px;
-          padding: 6px 12px; background: rgba(59, 130, 246, 0.1); border-radius: 20px; border: 1px solid rgba(59, 130, 246, 0.2);
+          display: inline-block; color: var(--neon-blue); font-size: 13px; font-weight: 700;
+          letter-spacing: 2px; text-transform: uppercase; margin-bottom: 24px;
+          padding: 8px 16px; background: rgba(59, 130, 246, 0.1); border-radius: 30px; border: 1px solid rgba(59, 130, 246, 0.3);
+          box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
         }
-        .hero h1 { font-size: clamp(40px, 6vw, 72px); margin-bottom: 24px; letter-spacing: -1px; }
-        .hero p { font-size: 20px; max-width: 700px; margin: 0 auto; }
+        .hero h1 { font-size: clamp(48px, 6vw, 80px); margin-bottom: 32px; letter-spacing: -1.5px; }
+        .hero p { font-size: 22px; line-height: 1.5; }
 
-        /* --- CONCEPTO (DIAGRAMA CSS) --- */
-        .concept-section { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
-        .concept-text h2 { font-size: 32px; margin-bottom: 16px; }
-        .concept-text p { margin-bottom: 16px; font-size: 16px; }
-        
-        .triangle-visual {
-          position: relative; width: 300px; height: 260px; margin: 0 auto;
+        /* --- CONCEPTO Y TRIANGULO CORREGIDO (SVG) --- */
+        .concept-section { 
+          display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; 
+          background: var(--bg-color); padding: 60px; border-radius: 24px; border: 1px solid var(--border-color);
         }
-        .tri-line { position: absolute; background: var(--border-color); z-index: 1;}
-        .line-1 { width: 100%; height: 2px; bottom: 30px; left: 0; }
-        .line-2 { width: 260px; height: 2px; top: 120px; left: -50px; transform: rotate(60deg); }
-        .line-3 { width: 260px; height: 2px; top: 120px; right: -50px; transform: rotate(-60deg); }
+        .concept-text h2 { font-size: 38px; margin-bottom: 24px; }
+        .concept-text p { margin-bottom: 20px; font-size: 18px; }
         
+        .triangle-container {
+          position: relative; width: 100%; max-width: 360px; height: 320px; margin: 0 auto;
+        }
+        /* El SVG exacto asegura que las líneas nunca se rompan */
+        .triangle-svg {
+          position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;
+        }
         .tri-node {
-          position: absolute; width: 80px; height: 80px; background: var(--surface-color);
-          border: 2px solid var(--n-color); border-radius: 50%; display: flex; flex-direction: column;
-          align-items: center; justify-content: center; z-index: 2; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+          position: absolute; width: 90px; height: 90px; background: var(--surface-color);
+          border: 3px solid var(--n-color); border-radius: 50%; display: flex; flex-direction: column;
+          align-items: center; justify-content: center; z-index: 2; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .tri-node span { font-size: 24px; margin-bottom: 4px; }
-        .tri-node small { font-size: 10px; font-weight: 700; color: var(--n-color); text-transform: uppercase; }
-        .node-c { top: 0; left: 110px; --n-color: #3b82f6; }
-        .node-i { bottom: 0; right: 0; --n-color: #10b981; }
-        .node-a { bottom: 0; left: 0; --n-color: #f59e0b; }
+        .tri-node:hover { transform: scale(1.1); box-shadow: 0 0 30px var(--n-color); }
+        .tri-node span { font-size: 28px; margin-bottom: 2px; }
+        .tri-node small { font-size: 11px; font-weight: 800; color: var(--n-color); text-transform: uppercase; letter-spacing: 1px; }
+        
+        /* Posiciones exactas sobre los vértices del SVG */
+        .node-c { top: 0; left: calc(50% - 45px); --n-color: #3b82f6; }
+        .node-i { bottom: 0; right: 10px; --n-color: #10b981; }
+        .node-a { bottom: 0; left: 10px; --n-color: #f59e0b; }
 
-        /* --- TARJETAS DE PILARES (EXPANDIBLES) --- */
-        .section-header { text-align: center; margin-bottom: 40px; }
-        .section-header h2 { font-size: 36px; }
-        .triad-stack { display: flex; flex-direction: column; gap: 24px; }
+        /* --- NUEVAS SECCIONES TEÓRICAS (ZERO TRUST & FASES) --- */
+        .theory-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 40px; }
+        .theory-card { background: var(--surface-color); padding: 40px; border-radius: 20px; border: 1px solid var(--border-color); }
+        .theory-card h3 { font-size: 28px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+        .theory-card h3 span { font-size: 32px; }
+        .theory-card p { font-size: 16px; margin-bottom: 24px; }
+        .steps-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+        .steps-list li { display: flex; gap: 16px; align-items: flex-start; background: rgba(0,0,0,0.2); padding: 16px; border-radius: 12px; }
+        .step-num { background: var(--accent-blue); color: white; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; font-weight: bold; font-size: 14px; flex-shrink: 0; }
+        .steps-list h4 { color: var(--text-primary); font-size: 15px; margin-bottom: 4px; }
+        .steps-list p { margin: 0; font-size: 13px; }
+
+        /* --- TARJETAS DE PILARES --- */
+        .section-header { text-align: center; margin-bottom: 50px; }
+        .section-header h2 { font-size: 42px; margin-bottom: 16px;}
+        .section-header p { font-size: 18px; max-width: 700px; margin: 0 auto;}
+        
+        .triad-stack { display: flex; flex-direction: column; gap: 24px; max-width: 1000px; margin: 0 auto; }
 
         .triad-card {
           background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 16px;
           position: relative; overflow: hidden; transition: all 0.3s ease;
         }
         .triad-card::before {
-          content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
-          background: var(--accent-color); opacity: 0.5; transition: width 0.3s ease;
+          content: ''; position: absolute; top: 0; left: 0; width: 6px; height: 100%;
+          background: var(--accent-color); transition: width 0.4s ease, opacity 0.4s ease;
         }
-        .triad-card.active::before { width: 100%; opacity: 0.05; }
-        .triad-card.active { border-color: var(--accent-color); }
+        .triad-card.active::before { width: 100%; opacity: 0.03; }
+        .triad-card.active { border-color: var(--accent-color); box-shadow: 0 10px 40px rgba(0,0,0,0.4); }
 
-        .card-header {
-          padding: 24px 32px; display: flex; justify-content: space-between; align-items: center;
-          cursor: pointer; position: relative; z-index: 10;
-        }
-        .card-title-area { display: flex; align-items: center; gap: 16px; }
-        .card-icon { font-size: 28px; background: rgba(0,0,0,0.2); width: 48px; height: 48px; display: grid; place-items: center; border-radius: 10px; }
-        .triad-card h2 { font-size: 24px; color: var(--text-primary); margin: 0; }
+        .card-header { padding: 30px 40px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; position: relative; z-index: 10; }
+        .card-title-area { display: flex; align-items: center; gap: 20px; }
+        .card-icon { font-size: 32px; background: rgba(0,0,0,0.3); width: 60px; height: 60px; display: grid; place-items: center; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
+        .triad-card h2 { font-size: 28px; margin: 0; }
         .triad-card.active h2 { color: var(--accent-color); }
-        .expand-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; pointer-events: none;}
+        .expand-btn { background: var(--bg-darker); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; pointer-events: none; text-transform: uppercase; letter-spacing: 1px;}
 
-        .card-summary { padding: 0 32px 24px; cursor: pointer; position: relative; z-index: 10;}
-        .card-summary p { font-size: 16px; margin-bottom: 12px; }
-        .question-text { font-style: italic; color: #e2e8f0 !important; border-left: 3px solid var(--accent-color); padding-left: 16px; }
+        .card-summary { padding: 0 40px 30px; cursor: pointer; position: relative; z-index: 10;}
+        .card-summary p { font-size: 18px; margin-bottom: 16px; }
+        .question-text { font-style: italic; color: #cbd5e1 !important; border-left: 3px solid var(--accent-color); padding-left: 20px; font-size: 17px !important;}
 
-        /* Contenido Oculto */
-        .card-expanded-content {
-          display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s ease-out;
-        }
+        .card-expanded-content { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .card-expanded-content.open { grid-template-rows: 1fr; }
-        .expanded-inner { overflow: hidden; padding: 0 32px; }
+        .expanded-inner { overflow: hidden; padding: 0 40px; }
         
-        .long-def { font-size: 15px; margin-bottom: 24px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.05);}
+        .long-def { font-size: 16px; margin-bottom: 32px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.05);}
         
-        .mechanisms-section { margin-bottom: 24px; }
-        .mechanisms-section h3 { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 16px;}
-        .mech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
-        .mech-item { background: rgba(0,0,0,0.2); padding: 16px; border-radius: 8px; border-left: 2px solid var(--border-color); }
+        .mechanisms-section { margin-bottom: 32px; }
+        .mechanisms-section h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-secondary); margin-bottom: 20px;}
+        .mech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .mech-item { background: rgba(0,0,0,0.25); padding: 20px; border-radius: 12px; border-left: 3px solid var(--border-color); }
         .triad-card.active .mech-item { border-left-color: var(--accent-color); }
-        .mech-item strong { display: block; font-size: 14px; color: var(--text-primary); margin-bottom: 8px; }
-        .mech-item p { font-size: 13px; margin: 0; }
+        .mech-item strong { display: block; font-size: 15px; color: var(--text-primary); margin-bottom: 10px; }
+        .mech-item p { font-size: 14px; margin: 0; }
 
-        .real-case-section { background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.2); padding: 20px; border-radius: 8px; margin-bottom: 32px;}
-        .case-badge { background: #ef4444; color: white; font-size: 10px; font-weight: 800; padding: 4px 8px; border-radius: 4px; margin-bottom: 12px; display: inline-block; letter-spacing: 1px;}
-        .real-case-section h4 { color: #fca5a5; font-size: 16px; margin-bottom: 8px;}
-        .real-case-section p { color: #fecaca; font-size: 14px; margin: 0;}
+        /* Datos Avanzados en Tarjetas */
+        .advanced-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 32px; }
+        .adv-box { display: flex; gap: 16px; background: rgba(255,255,255,0.02); border: 1px dashed var(--border-color); padding: 20px; border-radius: 12px; }
+        .adv-icon { font-size: 24px; opacity: 0.8;}
+        .adv-box h4 { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 8px;}
+        .adv-box p, .adv-box ul { font-size: 13px; color: #cbd5e1; margin: 0;}
+        .adv-box ul { padding-left: 16px; line-height: 1.5;}
+
+        .real-case-section { background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.15); padding: 24px; border-radius: 12px; margin-bottom: 40px;}
+        .case-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .case-badge { background: #ef4444; color: white; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 4px; letter-spacing: 1px; flex-shrink: 0;}
+        .real-case-section h4 { color: #fca5a5; font-size: 18px; margin: 0;}
+        .real-case-section p { color: #fecaca; font-size: 15px; margin: 0;}
 
         /* --- TRADE-OFFS (EL EQUILIBRIO) --- */
-        .tradeoffs-section { background: var(--bg-darker); border: 1px solid var(--border-color); border-radius: 24px; padding: 40px; text-align: center; }
-        .tradeoffs-section h2 { font-size: 32px; margin-bottom: 16px; }
-        .tradeoffs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 32px; text-align: left;}
-        .trade-card { background: var(--surface-color); padding: 24px; border-radius: 12px; }
-        .trade-card h3 { display: flex; align-items: center; gap: 8px; font-size: 18px; margin-bottom: 12px; color: #cbd5e1; }
-        .trade-card p { font-size: 14px; }
+        .tradeoffs-section { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 32px; padding: 60px; text-align: center; }
+        .tradeoffs-section h2 { font-size: 38px; margin-bottom: 20px; }
+        .tradeoffs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; margin-top: 40px; text-align: left;}
+        .trade-card { background: var(--surface-color); padding: 32px; border-radius: 16px; border: 1px solid transparent; transition: border 0.3s; }
+        .trade-card:hover { border-color: var(--accent-blue); }
+        .trade-card h3 { display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 22px; margin-bottom: 16px; color: #cbd5e1; background: rgba(0,0,0,0.2); padding: 16px; border-radius: 8px;}
+        .trade-card p { font-size: 15px; }
 
         /* --- SIMULADOR (QUIZ) --- */
-        .scenario-tester { background: var(--surface-color); border-radius: 24px; padding: 48px; border: 1px solid var(--border-color); }
-        .tester-header { text-align: center; margin-bottom: 32px;}
-        .tester-header h2 { font-size: 32px; }
+        .scenario-tester { background: var(--surface-color); border-radius: 32px; padding: 60px; border: 1px solid var(--border-color); max-width: 1000px; margin: 0 auto;}
+        .tester-header { text-align: center; margin-bottom: 40px;}
+        .tester-header h2 { font-size: 38px; }
         
-        .progress-bar { width: 100%; height: 6px; background: var(--bg-darker); border-radius: 3px; margin-bottom: 32px; overflow: hidden; }
-        .progress-fill { height: 100%; background: var(--accent-blue); transition: width 0.3s ease; }
+        .progress-bar { width: 100%; height: 8px; background: var(--bg-darker); border-radius: 4px; margin-bottom: 40px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--accent-blue); transition: width 0.4s ease; }
 
-        .scenario-box { background: var(--bg-color); padding: 32px; border-radius: 12px; margin-bottom: 32px; border-left: 4px solid var(--border-color); }
-        .scenario-number { display: block; color: var(--text-secondary); font-size: 14px; margin-bottom: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;}
-        .scenario-text { font-size: 20px; color: var(--text-primary); line-height: 1.5; font-style: italic; }
+        .scenario-box { background: var(--bg-darker); padding: 40px; border-radius: 16px; margin-bottom: 40px; border-left: 6px solid var(--border-color); }
+        .scenario-number { display: block; color: var(--text-secondary); font-size: 15px; margin-bottom: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;}
+        .scenario-text { font-size: 24px; color: var(--text-primary); line-height: 1.5; font-style: italic; }
 
-        .tester-buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 16px; }
+        .tester-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
         .test-btn {
           background: var(--bg-color); border: 2px solid var(--border-color); color: var(--text-primary);
-          padding: 16px 24px; font-size: 16px; font-weight: 600; border-radius: 12px; cursor: pointer; transition: all 0.2s;
-          display: flex; align-items: center; gap: 12px; min-width: 200px; justify-content: center;
+          padding: 20px; font-size: 18px; font-weight: 600; border-radius: 16px; cursor: pointer; transition: all 0.2s;
+          display: flex; align-items: center; justify-content: center; gap: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        .test-btn:hover:not(:disabled) { border-color: var(--btn-color); background: rgba(255,255,255,0.02); }
+        .test-btn:hover:not(:disabled) { border-color: var(--btn-color); background: rgba(255,255,255,0.03); transform: translateY(-2px); }
         
-        .test-btn.correct-ans { background: rgba(16, 185, 129, 0.1); border-color: #10b981; color: #10b981; }
-        .test-btn.wrong-ans { background: rgba(239, 68, 68, 0.1); border-color: #ef4444; color: #ef4444; opacity: 0.7; }
-        .test-btn:disabled:not(.correct-ans):not(.wrong-ans) { opacity: 0.3; }
+        .test-btn.correct-ans { background: rgba(16, 185, 129, 0.1); border-color: #10b981; color: #10b981; box-shadow: 0 0 20px rgba(16,185,129,0.2);}
+        .test-btn.wrong-ans { background: rgba(239, 68, 68, 0.1); border-color: #ef4444; color: #ef4444; opacity: 0.5; }
+        .test-btn:disabled:not(.correct-ans):not(.wrong-ans) { opacity: 0.2; }
 
-        .feedback-msg { margin-top: 32px; padding: 24px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; gap: 24px; animation: fadeInDown 0.3s ease;}
-        .feedback-msg.success { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); }
-        .feedback-msg.error { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); }
-        .feedback-content strong { display: block; font-size: 18px; margin-bottom: 8px; color: var(--text-primary); }
-        .feedback-content p { margin: 0; font-size: 15px; color: #cbd5e1; }
-        .next-btn { background: var(--text-primary); color: var(--bg-color); border: none; padding: 12px 24px; border-radius: 8px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: transform 0.2s; }
-        .next-btn:hover { transform: translateX(4px); }
+        .feedback-msg { margin-top: 40px; padding: 30px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; gap: 30px; animation: fadeInDown 0.4s cubic-bezier(0.4, 0, 0.2, 1);}
+        .feedback-msg.success { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.4); }
+        .feedback-msg.error { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.4); }
+        .feedback-content strong { display: block; font-size: 22px; margin-bottom: 12px; color: var(--text-primary); }
+        .feedback-content p { margin: 0; font-size: 16px; color: #cbd5e1; }
+        .next-btn { background: var(--text-primary); color: var(--bg-darker); border: none; padding: 16px 32px; font-size: 16px; border-radius: 12px; font-weight: 800; cursor: pointer; white-space: nowrap; transition: transform 0.2s, background 0.2s; }
+        .next-btn:hover { transform: translateX(5px); background: #fff; }
 
         /* Resultado Final */
         .result-view { text-align: center; }
-        .result-circle { width: 120px; height: 120px; border-radius: 50%; border: 6px solid var(--score-color); display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 32px; font-weight: 800; color: var(--score-color); }
-        .result-view h2 { margin-bottom: 16px; }
-        .result-view p { margin-bottom: 32px; font-size: 18px; }
-        .action-btn { background: var(--accent-blue); color: white; border: none; padding: 16px 32px; font-size: 16px; font-weight: 700; border-radius: 8px; cursor: pointer; transition: background 0.2s;}
-        .action-btn:hover { background: #2563eb; }
+        .result-circle { width: 160px; height: 160px; border-radius: 50%; border: 8px solid var(--score-color); display: flex; align-items: center; justify-content: center; margin: 0 auto 30px; font-size: 48px; font-weight: 800; color: var(--score-color); box-shadow: 0 0 30px rgba(0,0,0,0.2) inset;}
+        .result-view h2 { margin-bottom: 20px; font-size: 36px; }
+        .result-view p { margin-bottom: 40px; font-size: 20px; color: #cbd5e1; }
+        .action-btn { background: var(--accent-blue); color: white; border: none; padding: 20px 40px; font-size: 18px; font-weight: 700; border-radius: 12px; cursor: pointer; transition: background 0.2s, transform 0.2s;}
+        .action-btn:hover { background: #2563eb; transform: translateY(-2px); }
 
         /* --- FOOTER --- */
-        .site-footer { text-align: center; padding: 40px 0; border-top: 1px solid var(--border-color); color: var(--text-secondary); font-size: 14px; margin-top: auto; }
+        .site-footer { text-align: center; padding: 40px 0; border-top: 1px solid var(--border-color); background: var(--bg-darker); color: var(--text-secondary); font-size: 15px; }
 
         @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
 
         /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+          .main-container { padding: 60px 5vw; gap: 80px;}
+          .concept-section { grid-template-columns: 1fr; text-align: center; padding: 40px; }
+          .triangle-container { margin-top: 40px; }
+          .theory-grid { grid-template-columns: 1fr; }
+        }
+
         @media (max-width: 768px) {
-          .main-container { padding: 40px 16px; gap: 60px; }
-          .hero h1 { font-size: 36px; }
-          .concept-section { grid-template-columns: 1fr; text-align: center; }
-          .triangle-visual { margin-top: 32px; }
-          .tradeoffs-grid { grid-template-columns: 1fr; }
-          .scenario-tester { padding: 24px; }
-          .test-btn { width: 100%; justify-content: flex-start; }
+          .sticky-nav { gap: 16px; overflow-x: auto; justify-content: flex-start; padding: 16px; }
+          .nav-link { white-space: nowrap; }
+          .hero h1 { font-size: 42px; }
+          .hero p { font-size: 18px; }
+          .card-header { padding: 24px; flex-direction: column; align-items: flex-start; gap: 16px; }
+          .card-title-area { width: 100%; }
+          .expand-btn { align-self: flex-start; width: 100%; text-align: center; }
+          .card-summary, .expanded-inner { padding: 0 24px; }
+          .advanced-info-grid { grid-template-columns: 1fr; }
+          .tradeoffs-section, .scenario-tester { padding: 30px; border-radius: 20px;}
           .feedback-msg { flex-direction: column; align-items: stretch; text-align: left; }
           .next-btn { width: 100%; text-align: center; }
-          .card-header { padding: 20px; flex-direction: column; align-items: flex-start; gap: 16px; }
-          .expand-btn { align-self: flex-start; }
+          .case-header { flex-direction: column; align-items: flex-start; }
         }
       `}</style>
 
       <nav className="sticky-nav">
-        <button className="nav-link" onClick={() => scrollToSection('concept')}>Concepto</button>
-        <button className="nav-link" onClick={() => scrollToSection('pillars')}>Pilares (Detalle)</button>
+        <button className="nav-link" onClick={() => scrollToSection('concept')}>Fundamentos</button>
+        <button className="nav-link" onClick={() => scrollToSection('theory')}>Modernidad</button>
+        <button className="nav-link" onClick={() => scrollToSection('pillars')}>Los 3 Pilares</button>
         <button className="nav-link" onClick={() => scrollToSection('tradeoffs')}>El Equilibrio</button>
         <button className="nav-link" onClick={() => scrollToSection('simulator')}>Simulador</button>
       </nav>
@@ -461,33 +522,74 @@ export default function App() {
         
         {/* HERO */}
         <section className="hero">
-          <span className="eyebrow">Fundamentos de Ciberseguridad</span>
+          <span className="eyebrow">Arquitectura de Seguridad</span>
           <h1>La Tríada CIA</h1>
-          <p>El estándar global para evaluar y diseñar arquitecturas seguras. No es tecnología, es metodología.</p>
+          <p>El estándar internacional definitivo para evaluar riesgos y diseñar arquitecturas ciberseguras. Comprenderlo no es tecnología, es metodología.</p>
         </section>
 
-        {/* CONCEPTO & DIAGRAMA */}
+        {/* CONCEPTO & DIAGRAMA SVG PERFECTO */}
         <section id="concept" className="concept-section">
           <div className="concept-text">
-            <h2>¿Por qué un Triángulo?</h2>
-            <p>La Tríada CIA no es una lista de tareas, es un modelo de <strong>tensión constante</strong>. Representa los tres objetivos principales de la seguridad de la información.</p>
-            <p>Si la información de tu organización (o tuya personal) no cumple con estas tres características de forma simultánea, tu sistema es vulnerable.</p>
+            <h2>El Modelo Fundamental</h2>
+            <p>La Tríada CIA (Confidentiality, Integrity, Availability) no es una simple lista de tareas. Es un modelo de <strong>tensión geométrica constante</strong>.</p>
+            <p>Representa los tres objetivos supremos de la seguridad de la información. Si la data de tu organización no cumple con estas tres características de forma simultánea e ininterrumpida, tu ecosistema está técnicamente vulnerado, incluso si aún no ha sido atacado.</p>
           </div>
-          <div className="triangle-visual" aria-hidden="true">
-            <div className="tri-line line-1"></div>
-            <div className="tri-line line-2"></div>
-            <div className="tri-line line-3"></div>
+          
+          <div className="triangle-container" aria-hidden="true">
+            {/* SVG preciso para líneas conectadas perfectamente */}
+            <svg viewBox="0 0 360 320" className="triangle-svg">
+              <polygon points="180,45 305,275 55,275" fill="none" stroke="var(--border-color)" strokeWidth="4" />
+            </svg>
             <div className="tri-node node-c"><span>🔒</span><small>Conf.</small></div>
             <div className="tri-node node-i"><span>🛡️</span><small>Integ.</small></div>
             <div className="tri-node node-a"><span>⚡</span><small>Disp.</small></div>
           </div>
         </section>
 
+        {/* SECCIÓN NUEVA: CONTEXTO MODERNO Y APLICACIÓN */}
+        <section id="theory">
+          <div className="theory-grid">
+            <div className="theory-card">
+              <h3><span>🌐</span> La Tríada en la era "Zero Trust"</h3>
+              <p>Históricamente, las redes confiaban en todo lo que estuviera "dentro" del perímetro de la empresa. Hoy, el paradigma <strong>Zero Trust (Confianza Cero)</strong> asume que la red ya está comprometida.</p>
+              <p>Bajo este modelo, la Tríada CIA se aplica no solo al perímetro, sino a cada micro-transacción. La <em>Confidencialidad</em> exige verificar la identidad en cada petición, la <em>Integridad</em> asume que los paquetes pueden estar envenenados, y la <em>Disponibilidad</em> requiere arquitecturas elásticas en la nube inmunes a fallas locales.</p>
+            </div>
+            
+            <div className="theory-card">
+              <h3><span>⚙️</span> Fases de Implementación</h3>
+              <p>Aplicar el modelo CIA a una empresa requiere un ciclo de vida estructurado:</p>
+              <ul className="steps-list">
+                <li>
+                  <div className="step-num">1</div>
+                  <div>
+                    <h4>Clasificación de Activos</h4>
+                    <p>No se puede proteger lo que no se conoce. Identificar y catalogar la criticidad de los datos.</p>
+                  </div>
+                </li>
+                <li>
+                  <div className="step-num">2</div>
+                  <div>
+                    <h4>Auditoría de Brechas</h4>
+                    <p>Mapear el estado actual contra los 3 pilares para descubrir vulnerabilidades.</p>
+                  </div>
+                </li>
+                <li>
+                  <div className="step-num">3</div>
+                  <div>
+                    <h4>Despliegue de Controles</h4>
+                    <p>Implementar las mitigaciones técnicas (cifrado, firewalls, backups).</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
         {/* TARJETAS EXPANDIBLES */}
         <section id="pillars">
           <div className="section-header">
-            <h2>Análisis de los Pilares</h2>
-            <p>Haz clic en cada pilar para ver su definición completa, mecanismos de defensa y casos reales de fallos.</p>
+            <h2>Análisis Profundo de Pilares</h2>
+            <p>Despliega cada tarjeta para explorar la arquitectura técnica, los estándares de la industria y la autopsia de un incidente global real.</p>
           </div>
           <div className="triad-stack">
             {Object.values(triadData).map((pillar) => (
@@ -503,18 +605,18 @@ export default function App() {
 
         {/* EL EQUILIBRIO (TRADE-OFFS) */}
         <section id="tradeoffs" className="tradeoffs-section">
-          <span className="eyebrow">El desafío del arquitecto</span>
-          <h2>El problema del Equilibrio</h2>
-          <p style={{ maxWidth: '600px', margin: '0 auto' }}>Aumentar la seguridad en un pilar casi siempre tiene un costo operativo en otro. La seguridad perfecta no existe, se trata de gestionar el riesgo según el contexto.</p>
+          <span className="eyebrow">El desafío del arquitecto de seguridad</span>
+          <h2>El Problema de la Tensión Operativa</h2>
+          <p style={{ maxWidth: '800px', margin: '0 auto', fontSize: '18px' }}>Aumentar drásticamente la seguridad en un pilar casi siempre tiene un costo friccional en otro. La "Seguridad Perfecta" es teórica; la práctica consiste en gestionar y aceptar el riesgo según el contexto del negocio.</p>
           
           <div className="tradeoffs-grid">
             <div className="trade-card">
               <h3>🔒 vs ⚡ (Confidencialidad vs Disponibilidad)</h3>
-              <p>Si exiges un cifrado militar de múltiples capas y 3 métodos de autenticación para abrir un archivo, los datos estarán muy seguros, pero los empleados tardarán minutos en abrir un documento, afectando la disponibilidad del sistema para el trabajo ágil.</p>
+              <p>Si exiges un cifrado asimétrico complejo y 3 métodos de autenticación (biometría, token físico y contraseña) para abrir cada archivo, los datos serán impenetrables, pero el personal tardará minutos en acceder a ellos, arruinando la agilidad y disponibilidad del sistema en una urgencia.</p>
             </div>
             <div className="trade-card">
               <h3>🛡️ vs ⚡ (Integridad vs Disponibilidad)</h3>
-              <p>Si el sistema debe verificar decenas de firmas digitales y hashes antes de procesar una transacción financiera para asegurar que nada fue alterado, el procesamiento será más lento, pudiendo causar cuellos de botella en alta demanda.</p>
+              <p>Si un sistema transaccional debe verificar decenas de firmas digitales, cotejar hashes y grabar en 3 blockchains inmutables antes de aprobar una compra para asegurar integridad total, el procesamiento será tan lento que causará caídas de servicio (timeouts) durante picos de demanda.</p>
             </div>
           </div>
         </section>
@@ -527,7 +629,7 @@ export default function App() {
       </main>
 
       <footer className="site-footer">
-        <p>Infografía Educativa Avanzada · React + Vite</p>
+        <p>Documentación Profesional de Ciberseguridad · Construido con React & Vite</p>
       </footer>
     </>
   );
