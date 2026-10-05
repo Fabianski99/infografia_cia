@@ -15,9 +15,9 @@ Esta es una aplicación interactiva construida con React y Vite que sirve como r
 *   Vite
 *   CSS Nativo (Integrado en el componente para una distribución sencilla de un solo archivo)
 
-## Enlace al Proyecto
+## 🔗 Enlace al Proyecto
 
-[https://infografia-cia.vercel.app/](#)
+[Ver la Infografía Interactiva en vivo](https://infografia-cia.vercel.app/)
 
 ## Instalación y Uso Local
 
