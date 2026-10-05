@@ -98,7 +98,7 @@ const scenarios = [
   }
 ];
 
-// --- COMPONENTES ---
+// --- COMPONENTES SECUNDARIOS ---
 
 function ExpandableTriadCard({ pillar, isActive, onClick }) {
   return (
@@ -134,7 +134,6 @@ function ExpandableTriadCard({ pillar, isActive, onClick }) {
             </div>
           </div>
 
-          {/* Nueva subsección avanzada */}
           <div className="advanced-info-grid">
             <div className="adv-box">
               <span className="adv-icon">📋</span>
@@ -264,13 +263,13 @@ function EnhancedSimulator() {
   );
 }
 
-// --- APLICACIÓN PRINCIPAL ---
+// --- APLICACIÓN PRINCIPAL Y ESTILOS CSS ---
 export default function App() {
   const [activePillar, setActivePillar] = useState(null);
 
   useEffect(() => {
     document.body.style.margin = '0';
-    document.body.style.backgroundColor = '#0b1120'; // Fondo principal más oscuro
+    document.body.style.backgroundColor = '#0b1120'; 
     document.body.style.color = '#f8fafc';
     document.body.style.fontFamily = "'Inter', 'Segoe UI', system-ui, sans-serif";
   }, []);
@@ -292,12 +291,13 @@ export default function App() {
           --border-color: #334155;
           --accent-blue: #3b82f6;
           --neon-blue: #60a5fa;
+          --neon-green: #34d399;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
         h1, h2, h3, h4 { font-weight: 700; line-height: 1.2; color: var(--text-primary); }
-        p { line-height: 1.6; color: var(--text-secondary); }
+        p { line-height: 1.7; color: var(--text-secondary); margin-bottom: 16px; }
 
         /* NAVEGACIÓN STICKY */
         .sticky-nav {
@@ -312,10 +312,10 @@ export default function App() {
         }
         .nav-link:hover { color: var(--text-primary); text-shadow: 0 0 10px rgba(255,255,255,0.2); }
 
-        /* CONTENEDORES AMPLIADOS (FULL WIDTH CON MAX-WIDTH GRANDE) */
+        /* CONTENEDORES AMPLIADOS (MODIFICADO PARA OCUPAR MÁS ANCHO) */
         .main-container {
           width: 100%;
-          max-width: 1400px; /* Mucho más ancho para aprovechar pantallas grandes */
+          max-width: 1550px; /* Expandido para aprovechar pantallas ultrawide */
           margin: 0 auto;
           padding: 80px 4vw;
           display: flex; flex-direction: column; gap: 120px;
@@ -330,56 +330,91 @@ export default function App() {
           box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
         }
         .hero h1 { font-size: clamp(48px, 6vw, 80px); margin-bottom: 32px; letter-spacing: -1.5px; }
-        .hero p { font-size: 22px; line-height: 1.5; }
+        .hero p { font-size: 22px; line-height: 1.6; }
 
-        /* --- CONCEPTO Y TRIANGULO CORREGIDO (SVG) --- */
+        /* --- CONCEPTO Y TRIANGULO CORREGIDO --- */
         .concept-section { 
-          display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; 
-          background: var(--bg-color); padding: 60px; border-radius: 24px; border: 1px solid var(--border-color);
+          display: grid; grid-template-columns: 1.2fr 1fr; gap: 80px; align-items: center; 
+          background: var(--bg-color); padding: 70px; border-radius: 24px; border: 1px solid var(--border-color);
+          box-shadow: 0 20px 40px rgba(0,0,0,0.2);
         }
-        .concept-text h2 { font-size: 38px; margin-bottom: 24px; }
-        .concept-text p { margin-bottom: 20px; font-size: 18px; }
+        /* Rediseño de texto a la izquierda y más moderno */
+        .concept-text { text-align: left; }
+        .concept-text h2 { font-size: 42px; margin-bottom: 24px; }
+        .concept-text p { font-size: 18px; color: #cbd5e1;}
+        
+        .accent-border {
+          border-left: 4px solid var(--accent-blue);
+          padding-left: 24px;
+          margin-bottom: 32px;
+        }
+
+        .info-highlight {
+          margin-top: 32px;
+          background: linear-gradient(145deg, rgba(59, 130, 246, 0.1) 0%, rgba(15, 23, 42, 0) 100%);
+          border: 1px solid rgba(59, 130, 246, 0.2);
+          padding: 24px;
+          border-radius: 16px;
+        }
+        .info-highlight h4 { color: var(--neon-blue); margin-bottom: 12px; font-size: 18px; display: flex; align-items: center; gap: 8px;}
+        .info-highlight p { font-size: 16px; margin: 0; color: #94a3b8;}
         
         .triangle-container {
-          position: relative; width: 100%; max-width: 360px; height: 320px; margin: 0 auto;
+          position: relative; width: 100%; max-width: 400px; height: 350px; margin: 0 auto;
         }
-        /* El SVG exacto asegura que las líneas nunca se rompan */
         .triangle-svg {
           position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;
         }
         .tri-node {
-          position: absolute; width: 90px; height: 90px; background: var(--surface-color);
+          position: absolute; width: 100px; height: 100px; background: var(--surface-color);
           border: 3px solid var(--n-color); border-radius: 50%; display: flex; flex-direction: column;
           align-items: center; justify-content: center; z-index: 2; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
           transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .tri-node:hover { transform: scale(1.1); box-shadow: 0 0 30px var(--n-color); }
-        .tri-node span { font-size: 28px; margin-bottom: 2px; }
-        .tri-node small { font-size: 11px; font-weight: 800; color: var(--n-color); text-transform: uppercase; letter-spacing: 1px; }
+        .tri-node span { font-size: 32px; margin-bottom: 4px; }
+        .tri-node small { font-size: 12px; font-weight: 800; color: var(--n-color); text-transform: uppercase; letter-spacing: 1px; }
         
-        /* Posiciones exactas sobre los vértices del SVG */
-        .node-c { top: 0; left: calc(50% - 45px); --n-color: #3b82f6; }
+        .node-c { top: 0; left: calc(50% - 50px); --n-color: #3b82f6; }
         .node-i { bottom: 0; right: 10px; --n-color: #10b981; }
         .node-a { bottom: 0; left: 10px; --n-color: #f59e0b; }
 
-        /* --- NUEVAS SECCIONES TEÓRICAS (ZERO TRUST & FASES) --- */
+        /* --- SECCIONES TEÓRICAS (ALINEADAS Y MEJORADAS) --- */
         .theory-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 40px; }
-        .theory-card { background: var(--surface-color); padding: 40px; border-radius: 20px; border: 1px solid var(--border-color); }
-        .theory-card h3 { font-size: 28px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
-        .theory-card h3 span { font-size: 32px; }
-        .theory-card p { font-size: 16px; margin-bottom: 24px; }
-        .steps-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
-        .steps-list li { display: flex; gap: 16px; align-items: flex-start; background: rgba(0,0,0,0.2); padding: 16px; border-radius: 12px; }
-        .step-num { background: var(--accent-blue); color: white; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; font-weight: bold; font-size: 14px; flex-shrink: 0; }
-        .steps-list h4 { color: var(--text-primary); font-size: 15px; margin-bottom: 4px; }
-        .steps-list p { margin: 0; font-size: 13px; }
+        .theory-card { 
+          background: var(--surface-color); padding: 50px; border-radius: 20px; 
+          border: 1px solid var(--border-color); text-align: left;
+          position: relative; overflow: hidden;
+        }
+        .theory-card::before {
+          content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+          background: linear-gradient(90deg, var(--accent-blue), transparent);
+        }
+        .card-header-icon {
+          font-size: 40px; margin-bottom: 24px; display: inline-block;
+          background: rgba(0,0,0,0.3); padding: 16px; border-radius: 16px;
+        }
+        .theory-card h3 { font-size: 32px; margin-bottom: 24px; }
+        .theory-card p { font-size: 17px; margin-bottom: 24px; color: #cbd5e1;}
+        
+        .modern-pills { display: flex; flex-wrap: wrap; gap: 12px; margin: 32px 0; }
+        .pill { 
+          background: rgba(59, 130, 246, 0.1); color: var(--neon-blue);
+          padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .steps-list { list-style: none; display: flex; flex-direction: column; gap: 20px; margin-top: 30px;}
+        .steps-list li { display: flex; gap: 20px; align-items: flex-start; background: rgba(0,0,0,0.2); padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.02);}
+        .step-num { background: var(--accent-blue); color: white; width: 32px; height: 32px; display: grid; place-items: center; border-radius: 50%; font-weight: bold; font-size: 16px; flex-shrink: 0; box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);}
+        .steps-list h4 { color: var(--text-primary); font-size: 16px; margin-bottom: 8px; }
+        .steps-list p { margin: 0; font-size: 14px; color: #94a3b8;}
 
         /* --- TARJETAS DE PILARES --- */
-        .section-header { text-align: center; margin-bottom: 50px; }
+        .section-header { text-align: center; margin-bottom: 60px; max-width: 800px; margin-inline: auto;}
         .section-header h2 { font-size: 42px; margin-bottom: 16px;}
-        .section-header p { font-size: 18px; max-width: 700px; margin: 0 auto;}
+        .section-header p { font-size: 18px;}
         
-        .triad-stack { display: flex; flex-direction: column; gap: 24px; max-width: 1000px; margin: 0 auto; }
+        .triad-stack { display: flex; flex-direction: column; gap: 24px; max-width: 1100px; margin: 0 auto; }
 
         .triad-card {
           background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 16px;
@@ -393,15 +428,15 @@ export default function App() {
         .triad-card.active { border-color: var(--accent-color); box-shadow: 0 10px 40px rgba(0,0,0,0.4); }
 
         .card-header { padding: 30px 40px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; position: relative; z-index: 10; }
-        .card-title-area { display: flex; align-items: center; gap: 20px; }
-        .card-icon { font-size: 32px; background: rgba(0,0,0,0.3); width: 60px; height: 60px; display: grid; place-items: center; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
+        .card-title-area { display: flex; align-items: center; gap: 24px; }
+        .card-icon { font-size: 32px; background: rgba(0,0,0,0.3); width: 64px; height: 64px; display: grid; place-items: center; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
         .triad-card h2 { font-size: 28px; margin: 0; }
         .triad-card.active h2 { color: var(--accent-color); }
         .expand-btn { background: var(--bg-darker); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; pointer-events: none; text-transform: uppercase; letter-spacing: 1px;}
 
         .card-summary { padding: 0 40px 30px; cursor: pointer; position: relative; z-index: 10;}
         .card-summary p { font-size: 18px; margin-bottom: 16px; }
-        .question-text { font-style: italic; color: #cbd5e1 !important; border-left: 3px solid var(--accent-color); padding-left: 20px; font-size: 17px !important;}
+        .question-text { font-style: italic; color: #cbd5e1 !important; border-left: 3px solid var(--accent-color); padding-left: 20px; font-size: 17px !important; margin: 0;}
 
         .card-expanded-content { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .card-expanded-content.open { grid-template-rows: 1fr; }
@@ -417,7 +452,6 @@ export default function App() {
         .mech-item strong { display: block; font-size: 15px; color: var(--text-primary); margin-bottom: 10px; }
         .mech-item p { font-size: 14px; margin: 0; }
 
-        /* Datos Avanzados en Tarjetas */
         .advanced-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 32px; }
         .adv-box { display: flex; gap: 16px; background: rgba(255,255,255,0.02); border: 1px dashed var(--border-color); padding: 20px; border-radius: 12px; }
         .adv-icon { font-size: 24px; opacity: 0.8;}
@@ -431,26 +465,26 @@ export default function App() {
         .real-case-section h4 { color: #fca5a5; font-size: 18px; margin: 0;}
         .real-case-section p { color: #fecaca; font-size: 15px; margin: 0;}
 
-        /* --- TRADE-OFFS (EL EQUILIBRIO) --- */
-        .tradeoffs-section { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 32px; padding: 60px; text-align: center; }
-        .tradeoffs-section h2 { font-size: 38px; margin-bottom: 20px; }
-        .tradeoffs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; margin-top: 40px; text-align: left;}
-        .trade-card { background: var(--surface-color); padding: 32px; border-radius: 16px; border: 1px solid transparent; transition: border 0.3s; }
+        /* --- TRADE-OFFS --- */
+        .tradeoffs-section { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 32px; padding: 70px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2);}
+        .tradeoffs-section h2 { font-size: 42px; margin-bottom: 20px; }
+        .tradeoffs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; margin-top: 50px; text-align: left;}
+        .trade-card { background: var(--surface-color); padding: 40px; border-radius: 20px; border: 1px solid transparent; transition: border 0.3s; }
         .trade-card:hover { border-color: var(--accent-blue); }
-        .trade-card h3 { display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 22px; margin-bottom: 16px; color: #cbd5e1; background: rgba(0,0,0,0.2); padding: 16px; border-radius: 8px;}
-        .trade-card p { font-size: 15px; }
+        .trade-card h3 { display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 24px; margin-bottom: 20px; color: #cbd5e1; background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px;}
+        .trade-card p { font-size: 16px; margin: 0;}
 
-        /* --- SIMULADOR (QUIZ) --- */
-        .scenario-tester { background: var(--surface-color); border-radius: 32px; padding: 60px; border: 1px solid var(--border-color); max-width: 1000px; margin: 0 auto;}
+        /* --- SIMULADOR --- */
+        .scenario-tester { background: var(--surface-color); border-radius: 32px; padding: 70px; border: 1px solid var(--border-color); max-width: 1100px; margin: 0 auto; width: 100%;}
         .tester-header { text-align: center; margin-bottom: 40px;}
-        .tester-header h2 { font-size: 38px; }
+        .tester-header h2 { font-size: 42px; }
         
         .progress-bar { width: 100%; height: 8px; background: var(--bg-darker); border-radius: 4px; margin-bottom: 40px; overflow: hidden; }
         .progress-fill { height: 100%; background: var(--accent-blue); transition: width 0.4s ease; }
 
         .scenario-box { background: var(--bg-darker); padding: 40px; border-radius: 16px; margin-bottom: 40px; border-left: 6px solid var(--border-color); }
         .scenario-number { display: block; color: var(--text-secondary); font-size: 15px; margin-bottom: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;}
-        .scenario-text { font-size: 24px; color: var(--text-primary); line-height: 1.5; font-style: italic; }
+        .scenario-text { font-size: 24px; color: var(--text-primary); line-height: 1.5; font-style: italic; margin: 0;}
 
         .tester-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
         .test-btn {
@@ -472,7 +506,6 @@ export default function App() {
         .next-btn { background: var(--text-primary); color: var(--bg-darker); border: none; padding: 16px 32px; font-size: 16px; border-radius: 12px; font-weight: 800; cursor: pointer; white-space: nowrap; transition: transform 0.2s, background 0.2s; }
         .next-btn:hover { transform: translateX(5px); background: #fff; }
 
-        /* Resultado Final */
         .result-view { text-align: center; }
         .result-circle { width: 160px; height: 160px; border-radius: 50%; border: 8px solid var(--score-color); display: flex; align-items: center; justify-content: center; margin: 0 auto 30px; font-size: 48px; font-weight: 800; color: var(--score-color); box-shadow: 0 0 30px rgba(0,0,0,0.2) inset;}
         .result-view h2 { margin-bottom: 20px; font-size: 36px; }
@@ -480,16 +513,18 @@ export default function App() {
         .action-btn { background: var(--accent-blue); color: white; border: none; padding: 20px 40px; font-size: 18px; font-weight: 700; border-radius: 12px; cursor: pointer; transition: background 0.2s, transform 0.2s;}
         .action-btn:hover { background: #2563eb; transform: translateY(-2px); }
 
-        /* --- FOOTER --- */
         .site-footer { text-align: center; padding: 40px 0; border-top: 1px solid var(--border-color); background: var(--bg-darker); color: var(--text-secondary); font-size: 15px; }
 
         @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
 
         /* --- RESPONSIVE --- */
+        @media (max-width: 1200px) {
+          .concept-section { grid-template-columns: 1fr; text-align: left; padding: 50px; }
+          .triangle-container { margin-top: 40px; }
+        }
+
         @media (max-width: 1024px) {
           .main-container { padding: 60px 5vw; gap: 80px;}
-          .concept-section { grid-template-columns: 1fr; text-align: center; padding: 40px; }
-          .triangle-container { margin-top: 40px; }
           .theory-grid { grid-template-columns: 1fr; }
         }
 
@@ -498,6 +533,7 @@ export default function App() {
           .nav-link { white-space: nowrap; }
           .hero h1 { font-size: 42px; }
           .hero p { font-size: 18px; }
+          .concept-section { padding: 30px; }
           .card-header { padding: 24px; flex-direction: column; align-items: flex-start; gap: 16px; }
           .card-title-area { width: 100%; }
           .expand-btn { align-self: flex-start; width: 100%; text-align: center; }
@@ -527,18 +563,27 @@ export default function App() {
           <p>El estándar internacional definitivo para evaluar riesgos y diseñar arquitecturas ciberseguras. Comprenderlo no es tecnología, es metodología.</p>
         </section>
 
-        {/* CONCEPTO & DIAGRAMA SVG PERFECTO */}
+        {/* CONCEPTO & DIAGRAMA SVG PERFECTO (Rediseñado alineado a la izquierda) */}
         <section id="concept" className="concept-section">
           <div className="concept-text">
+            <span className="eyebrow" style={{marginBottom: '16px', background: 'transparent', border: '1px solid var(--border-color)', color: 'var(--text-secondary)'}}>Concepto Core</span>
             <h2>El Modelo Fundamental</h2>
-            <p>La Tríada CIA (Confidentiality, Integrity, Availability) no es una simple lista de tareas. Es un modelo de <strong>tensión geométrica constante</strong>.</p>
-            <p>Representa los tres objetivos supremos de la seguridad de la información. Si la data de tu organización no cumple con estas tres características de forma simultánea e ininterrumpida, tu ecosistema está técnicamente vulnerado, incluso si aún no ha sido atacado.</p>
+            
+            <div className="accent-border">
+              <p>La Tríada CIA (Confidentiality, Integrity, Availability) no es una simple lista de tareas. Es un modelo de <strong>tensión geométrica constante</strong>.</p>
+              <p>Representa los tres objetivos supremos de la seguridad de la información. Si la data de tu organización no cumple con estas tres características de forma simultánea e ininterrumpida, tu ecosistema está técnicamente vulnerado, incluso si aún no ha sido atacado.</p>
+            </div>
+
+            {/* INFO AGREGADA: Sin borrar lo anterior, se añade profundidad teórica */}
+            <div className="info-highlight">
+              <h4><span>💡</span> El Efecto Dominó y su Evolución</h4>
+              <p>Históricamente originado en el ámbito militar y de inteligencia, este modelo se ha convertido en el estándar de oro corporativo. Una falla en un vértice inevitablemente desestabiliza los otros: si un ataque de <em>ransomware</em> cifra tus discos (pérdida severa de <strong>Disponibilidad</strong>), casi siempre viene acompañado de la exfiltración o robo de esos datos (ruptura total de la <strong>Confidencialidad</strong>).</p>
+            </div>
           </div>
           
           <div className="triangle-container" aria-hidden="true">
-            {/* SVG preciso para líneas conectadas perfectamente */}
-            <svg viewBox="0 0 360 320" className="triangle-svg">
-              <polygon points="180,45 305,275 55,275" fill="none" stroke="var(--border-color)" strokeWidth="4" />
+            <svg viewBox="0 0 400 350" className="triangle-svg">
+              <polygon points="200,50 340,300 60,300" fill="none" stroke="var(--border-color)" strokeWidth="4" />
             </svg>
             <div className="tri-node node-c"><span>🔒</span><small>Conf.</small></div>
             <div className="tri-node node-i"><span>🛡️</span><small>Integ.</small></div>
@@ -546,38 +591,65 @@ export default function App() {
           </div>
         </section>
 
-        {/* SECCIÓN NUEVA: CONTEXTO MODERNO Y APLICACIÓN */}
+        {/* SECCIÓN MODERNA Y APLICACIÓN (Rediseñado alineado a la izquierda con más datos) */}
         <section id="theory">
           <div className="theory-grid">
             <div className="theory-card">
-              <h3><span>🌐</span> La Tríada en la era "Zero Trust"</h3>
-              <p>Históricamente, las redes confiaban en todo lo que estuviera "dentro" del perímetro de la empresa. Hoy, el paradigma <strong>Zero Trust (Confianza Cero)</strong> asume que la red ya está comprometida.</p>
-              <p>Bajo este modelo, la Tríada CIA se aplica no solo al perímetro, sino a cada micro-transacción. La <em>Confidencialidad</em> exige verificar la identidad en cada petición, la <em>Integridad</em> asume que los paquetes pueden estar envenenados, y la <em>Disponibilidad</em> requiere arquitecturas elásticas en la nube inmunes a fallas locales.</p>
+              <div className="card-header-icon">🌐</div>
+              <h3>La Tríada en la era "Zero Trust"</h3>
+              <p>Históricamente, las redes confiaban en todo lo que estuviera "dentro" del perímetro de la empresa. Hoy, el paradigma <strong>Zero Trust (Confianza Cero)</strong> asume que la red ya está comprometida desde el inicio.</p>
+              <p>Bajo este modelo, la Tríada CIA se aplica no solo al perímetro, sino a cada micro-transacción. La <em>Confidencialidad</em> exige verificar la identidad en cada petición, la <em>Integridad</em> asume que los paquetes pueden estar envenenados internamente, y la <em>Disponibilidad</em> requiere arquitecturas elásticas en la nube inmunes a fallas locales.</p>
+              
+              {/* INFO AGREGADA: Tags modernos y ampliación de conceptos */}
+              <div className="modern-pills">
+                <span className="pill">Microsegmentación</span>
+                <span className="pill">Telemetría Avanzada</span>
+                <span className="pill">Identidad como Perímetro</span>
+              </div>
+              <p style={{fontSize: '15px', borderTop: '1px solid var(--border-color)', paddingTop: '20px', marginTop: '20px'}}>
+                Ya no basta con proteger la puerta de entrada. La seguridad debe integrarse en el código fuente de cada aplicación y en la validación continua de cada usuario activo.
+              </p>
             </div>
             
             <div className="theory-card">
-              <h3><span>⚙️</span> Fases de Implementación</h3>
-              <p>Aplicar el modelo CIA a una empresa requiere un ciclo de vida estructurado:</p>
+              <div className="card-header-icon">⚙️</div>
+              <h3>Fases de Implementación</h3>
+              <p>Aplicar el modelo CIA a una empresa requiere un ciclo de vida estructurado e iterativo:</p>
               <ul className="steps-list">
                 <li>
                   <div className="step-num">1</div>
                   <div>
                     <h4>Clasificación de Activos</h4>
-                    <p>No se puede proteger lo que no se conoce. Identificar y catalogar la criticidad de los datos.</p>
+                    <p>No se puede proteger lo que no se conoce. Identificar y catalogar la criticidad de los datos (Públicos, Internos, Confidenciales).</p>
                   </div>
                 </li>
                 <li>
                   <div className="step-num">2</div>
                   <div>
                     <h4>Auditoría de Brechas</h4>
-                    <p>Mapear el estado actual contra los 3 pilares para descubrir vulnerabilidades.</p>
+                    <p>Mapear el estado actual contra los 3 pilares para descubrir vulnerabilidades y falta de controles técnicos.</p>
                   </div>
                 </li>
                 <li>
                   <div className="step-num">3</div>
                   <div>
                     <h4>Despliegue de Controles</h4>
-                    <p>Implementar las mitigaciones técnicas (cifrado, firewalls, backups).</p>
+                    <p>Implementar las mitigaciones técnicas (cifrado, firewalls, backups inmutables).</p>
+                  </div>
+                </li>
+                {/* INFO AGREGADA: Dos pasos vitales adicionales sin borrar los anteriores */}
+                <li>
+                  <div className="step-num">4</div>
+                  <div>
+                    <h4>Monitorización Continua (SOC/SIEM)</h4>
+                    <p>Vigilar en tiempo real los 3 pilares mediante analítica de logs para detectar intentos de brecha inmediatamente.</p>
+                  </div>
+                </li>
+                <li>
+                  <div className="step-num">5</div>
+                  <div>
+                    <h4>Respuesta a Incidentes (IR)</h4>
+                    <p>Tener <em>playbooks</em> probados para restaurar la disponibilidad e investigar la ruptura de confidencialidad o integridad.</p>
                   </div>
                 </li>
               </ul>
@@ -585,7 +657,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* TARJETAS EXPANDIBLES */}
+        {/* TARJETAS EXPANDIBLES (Se mantienen intactas por su excelente funcionalidad) */}
         <section id="pillars">
           <div className="section-header">
             <h2>Análisis Profundo de Pilares</h2>
@@ -605,18 +677,18 @@ export default function App() {
 
         {/* EL EQUILIBRIO (TRADE-OFFS) */}
         <section id="tradeoffs" className="tradeoffs-section">
-          <span className="eyebrow">El desafío del arquitecto de seguridad</span>
+          <span className="eyebrow" style={{marginBottom: '16px'}}>El desafío del arquitecto de seguridad</span>
           <h2>El Problema de la Tensión Operativa</h2>
           <p style={{ maxWidth: '800px', margin: '0 auto', fontSize: '18px' }}>Aumentar drásticamente la seguridad en un pilar casi siempre tiene un costo friccional en otro. La "Seguridad Perfecta" es teórica; la práctica consiste en gestionar y aceptar el riesgo según el contexto del negocio.</p>
           
           <div className="tradeoffs-grid">
             <div className="trade-card">
               <h3>🔒 vs ⚡ (Confidencialidad vs Disponibilidad)</h3>
-              <p>Si exiges un cifrado asimétrico complejo y 3 métodos de autenticación (biometría, token físico y contraseña) para abrir cada archivo, los datos serán impenetrables, pero el personal tardará minutos en acceder a ellos, arruinando la agilidad y disponibilidad del sistema en una urgencia.</p>
+              <p>Si exiges un cifrado asimétrico complejo y 3 métodos de autenticación (biometría, token físico y contraseña) para abrir cada archivo, los datos serán impenetrables, pero el personal tardará minutos en acceder a ellos, arruinando la agilidad y disponibilidad del sistema en una urgencia operativa.</p>
             </div>
             <div className="trade-card">
               <h3>🛡️ vs ⚡ (Integridad vs Disponibilidad)</h3>
-              <p>Si un sistema transaccional debe verificar decenas de firmas digitales, cotejar hashes y grabar en 3 blockchains inmutables antes de aprobar una compra para asegurar integridad total, el procesamiento será tan lento que causará caídas de servicio (timeouts) durante picos de demanda.</p>
+              <p>Si un sistema transaccional debe verificar decenas de firmas digitales, cotejar hashes contra bases de datos externas y grabar en 3 blockchains inmutables antes de aprobar una compra para asegurar integridad total, el procesamiento será tan lento que causará caídas de servicio (timeouts) durante picos de demanda.</p>
             </div>
           </div>
         </section>
@@ -629,7 +701,7 @@ export default function App() {
       </main>
 
       <footer className="site-footer">
-        <p>Documentación Profesional de Ciberseguridad · Construido con React & Vite</p>
+        <p>Documentación Profesional de Ciberseguridad · Arquitectura e Infografía Interactiva</p>
       </footer>
     </>
   );
