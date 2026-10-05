@@ -50,7 +50,7 @@ const triadData = {
     id: 'disponibilidad',
     title: 'Disponibilidad',
     color: '#f59e0b', // Amber
-    icon: '⚡',
+    icon: '🔄',
     shortDef: 'Garantizar que los sistemas y los datos estén operativos cuando se necesiten.',
     longDef: 'La seguridad es inútil si impide el funcionamiento del negocio. La disponibilidad asegura que los servicios, redes y aplicaciones respondan de manera oportuna frente a picos de demanda, ataques destructivos, fallos de hardware o desastres naturales. Está directamente ligada a la continuidad del negocio y los Acuerdos de Nivel de Servicio (SLA).',
     question: '¿Los usuarios legítimos pueden acceder al sistema en este preciso momento?',
@@ -633,7 +633,7 @@ export default function App() {
             </svg>
             <div className="tri-node node-c"><span>🔒</span><small>Conf.</small></div>
             <div className="tri-node node-i"><span>🛡️</span><small>Integ.</small></div>
-            <div className="tri-node node-a"><span>⚡</span><small>Disp.</small></div>
+            <div className="tri-node node-a"><span>🔄</span><small>Disp.</small></div>
           </div>
         </section>
 
