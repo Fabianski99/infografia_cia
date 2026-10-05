@@ -1,16 +1,39 @@
-# React + Vite
+# Infografía Interactiva: La Tríada CIA (Ciberseguridad)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Esta es una aplicación interactiva construida con React y Vite que sirve como recurso educativo y de referencia sobre la **Tríada CIA (Confidencialidad, Integridad y Disponibilidad)**, el modelo fundamental de la seguridad de la información.
 
-Currently, two official plugins are available:
+## 🌟 Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+*   **Diseño Moderno:** Interfaz responsiva estilo "Dark Mode" optimizada para la lectura.
+*   **Contenido Detallado:** Explicaciones profundas de cada pilar, incluyendo mecanismos de defensa, estándares de la industria (ISO, NIST) y análisis de casos reales.
+*   **Enfoque Actualizado:** Incluye conceptos modernos como la arquitectura *Zero Trust* y la tensión operativa entre los pilares.
+*   **Simulador Interactivo:** Un mini-juego integrado donde el usuario puede poner a prueba sus conocimientos clasificando diferentes escenarios de brechas de seguridad.
 
-## React Compiler
+## 🚀 Tecnologías
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+*   React
+*   Vite
+*   CSS Nativo (Integrado en el componente para una distribución sencilla de un solo archivo)
 
-## Expanding the ESLint configuration
+## 🔗 Enlace al Proyecto
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+*(Si tienes el proyecto alojado en alguna plataforma como Vercel, Netlify o GitHub Pages, reemplaza este enlace con la URL real)*
+[Ver la Infografía Interactiva en vivo](#)
+
+## 🛠️ Instalación y Uso Local
+
+Para correr este proyecto en tu máquina local:
+
+1.  Asegúrate de tener [Node.js](https://nodejs.org/) instalado.
+2.  Clona este repositorio o descarga los archivos.
+3.  Abre una terminal en el directorio del proyecto y ejecuta:
+
+```bash
+# Instalar dependencias
+npm install
+
+# Iniciar el servidor de desarrollo local
+npm run dev
+```
+
+4.  Abre tu navegador en la dirección que indique la terminal (usualmente `http://localhost:5173/`).
