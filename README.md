@@ -17,8 +17,7 @@ Esta es una aplicación interactiva construida con React y Vite que sirve como r
 
 ## Enlace al Proyecto
 
-*(Si tienes el proyecto alojado en alguna plataforma como Vercel, Netlify o GitHub Pages, reemplaza este enlace con la URL real)*
-[Ver la Infografía Interactiva en vivo](#)
+[https://infografia-cia.vercel.app/](#)
 
 ## Instalación y Uso Local
 
